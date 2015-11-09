@@ -11,6 +11,7 @@
 package tmn.java.project;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +44,15 @@ public class Controller {
 			// Collect the user's file selection and attempt to create HTML
 			// files for the player data
 			List<File> files = Arrays.asList(fileChooser.getSelectedFiles());
-			createHTMLFiles(files);
+			try {
+				createHTMLFiles(files);
+			} catch (IOException e) {
+				// Notify the user that something went wrong
+				JOptionPane.showMessageDialog(null,
+						"Error: Unable to generate HTML file for one or more "
+								+ "of the selected files.",
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
 		} else {
 			// No files selected
 			// Notify the user that the application will terminate
@@ -61,11 +70,35 @@ public class Controller {
 	 * @param files
 	 *            The list of files to use to try to create {@link Player}
 	 *            objects and HTML files
+	 * @throws IOException
 	 */
-	private static void createHTMLFiles(List<File> files) {
+	private static void createHTMLFiles(List<File> files) throws IOException {
 		for (File file : files) {
+			// Create the Player from the input file
 			Player player = new Player(file);
-			player.writeToHTML("path/to/working/directory/html/filename.html");
+
+			// Initialize a file
+			String fileName = System.getProperty("user.dir")
+					+ System.getProperty("file.separator") + "html"
+					+ System.getProperty("file.separator") + player.getId()
+					+ ".html";
+			File fileToWrite = new File(fileName);
+			// If the file already exists, append a number in parentheses
+			int index = 0;
+			while (!fileToWrite.createNewFile()) {
+				// Find the start of .html or (<index>).html in the filename
+				int ndxExtStart = Math.min(fileName.indexOf(".html"),
+						fileName.indexOf("\\(.+?\\)"));
+				// Get everything before the index and extension
+				String prefix = fileName.substring(0, ndxExtStart);
+				// Append the index and extension back on
+				fileName = prefix + "(" + index++ + ")" + ".html";
+				// Try to create this file
+				fileToWrite = new File(fileName);
+			}
+
+			// Write the player data to ./html/<player-id>.html
+			player.writeToHTML(fileToWrite);
 		}
 	}
 

@@ -10,9 +10,16 @@
  *******************************************************************************/
 package tmn.java.project;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.List;
+
+import com.google.gson.Gson;
 
 /**
  * This class defines Player objects by providing storage for player data and
@@ -60,7 +67,15 @@ public class Player {
 	 *            an object of type Player.
 	 */
 	public Player(File playerJSON) {
-
+		Gson gson = new Gson();
+		try {
+			BufferedReader reader = Files
+					.newBufferedReader(playerJSON.toPath());
+			gson.fromJson(reader, Player.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -143,11 +158,18 @@ public class Player {
 	 * Generate an HTML file containing the Player's data in order to display
 	 * this information in a web browser
 	 * 
-	 * @param path
-	 *            The path where this file should be written
+	 * @param fileToWrite
+	 *            The .html file where the player data will be written
 	 */
-	public void writeToHTML(String path) {
-
+	public void writeToHTML(File fileToWrite) {
+		try {
+			BufferedWriter writer = Files.newBufferedWriter(
+					fileToWrite.toPath(), Charset.forName("UTF-8"));
+			writer.write(fileToWrite.getName());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
