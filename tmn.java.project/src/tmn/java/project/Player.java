@@ -10,7 +10,6 @@
  *******************************************************************************/
 package tmn.java.project;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +17,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
-
-import com.google.gson.Gson;
 
 /**
  * This class defines Player objects by providing storage for player data and
@@ -50,7 +47,7 @@ public class Player {
 	private URL imagePath;
 
 	/**
-	 * The nullary constructor
+	 * The constructor
 	 */
 	public Player() {
 		setId(null);
@@ -65,17 +62,9 @@ public class Player {
 	 * @param playerJSON
 	 *            The .json file containing player data with which to construct
 	 *            an object of type Player.
+	 * @throws IOException
 	 */
 	public Player(File playerJSON) {
-		Gson gson = new Gson();
-		try {
-			BufferedReader reader = Files
-					.newBufferedReader(playerJSON.toPath());
-			gson.fromJson(reader, Player.class);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -160,16 +149,12 @@ public class Player {
 	 * 
 	 * @param fileToWrite
 	 *            The .html file where the player data will be written
+	 * @throws IOException
 	 */
-	public void writeToHTML(File fileToWrite) {
-		try {
-			BufferedWriter writer = Files.newBufferedWriter(
-					fileToWrite.toPath(), Charset.forName("UTF-8"));
-			writer.write(fileToWrite.getName());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void writeToHTML(File fileToWrite) throws IOException {
+		BufferedWriter writer = Files.newBufferedWriter(fileToWrite.toPath(),
+				Charset.forName("UTF-8"));
+		writer.write(fileToWrite.getName());
 	}
 
 }

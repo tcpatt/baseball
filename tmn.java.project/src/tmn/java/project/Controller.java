@@ -12,11 +12,17 @@ package tmn.java.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import com.google.gson.Gson;
 
 /**
  * This class contains the main method for this project and acts as a control
@@ -27,10 +33,9 @@ import javax.swing.JOptionPane;
 public class Controller {
 
 	/**
-	 * This method presents the user with a dialog to select files with which to
-	 * create {@link Player} objects and HTML files.
+	 * This method presents the user with a dialog to select files.
 	 */
-	private static void presentFileChooser() {
+	private static List<File> getFileSelection() {
 		// Construct a dialog for the user to select player data files to use
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Select player data files");
@@ -39,44 +44,49 @@ public class Controller {
 		// Present the dialog to the user
 		int openFileReturn = fileChooser.showOpenDialog(null);
 
-		// Continue if the user selected one or more files
+		// Collect the selected files
+		List<File> files = null;
 		if (JFileChooser.APPROVE_OPTION == openFileReturn) {
-			// Collect the user's file selection and attempt to create HTML
-			// files for the player data
-			List<File> files = Arrays.asList(fileChooser.getSelectedFiles());
-			try {
-				createHTMLFiles(files);
-			} catch (IOException e) {
-				// Notify the user that something went wrong
-				JOptionPane.showMessageDialog(null,
-						"Error: Unable to generate HTML file for one or more "
-								+ "of the selected files.",
-						"Error", JOptionPane.ERROR_MESSAGE);
-			}
-		} else {
-			// No files selected
-			// Notify the user that the application will terminate
-			JOptionPane.showMessageDialog(null,
-					"No files were selected. The application will now terminate.",
-					"No selection", JOptionPane.ERROR_MESSAGE);
+			files = Arrays.asList(fileChooser.getSelectedFiles());
 		}
+		return files;
 	}
 
 	/**
-	 * This method loops over the list of input files and attempts to create
-	 * {@link Player} objects for the input and then write HTML files for the
-	 * player data.
+	 * This method attempts to create a list of {@link Player} objects for the
+	 * list of input files.
 	 * 
 	 * @param files
-	 *            The list of files to use to try to create {@link Player}
-	 *            objects and HTML files
-	 * @throws IOException
+	 *            The list of files from which to try to create {@link Player}
+	 *            objects
+	 * @return The list of {@link Player} objects created by this method
+	 * @throws UnsupportedEncodingException
 	 */
-	private static void createHTMLFiles(List<File> files) throws IOException {
+	private static List<Player> createPlayers(List<File> files)
+			throws UnsupportedEncodingException {
+		List<Player> players = new ArrayList<Player>();
 		for (File file : files) {
 			// Create the Player from the input file
-			Player player = new Player(file);
+			Reader reader = new InputStreamReader(
+					Player.class.getResourceAsStream(file.getName()), "UTF-8");
+			Gson gson = new Gson();
+			Player player = gson.fromJson(reader, Player.class);
+			players.add(player);
+		}
+		return players;
+	}
 
+	/**
+	 * This method loops over the list of input {@link Player} objects and
+	 * attempts to write HTML files for the player data.
+	 * 
+	 * @param players
+	 *            The list of {@link Player} objects to use to create HTML files
+	 * @throws IOException
+	 */
+	private static void createHTMLFiles(List<Player> players)
+			throws IOException {
+		for (Player player : players) {
 			// Initialize a file
 			String fileName = System.getProperty("user.dir")
 					+ System.getProperty("file.separator") + "html"
@@ -107,8 +117,48 @@ public class Controller {
 	 */
 	public static void main(String[] args) {
 		// Present a file selection dialog to the user.
-		// Control is handled elsewhere from here.
-		presentFileChooser();
-	}
+		List<File> selectedFiles = getFileSelection();
 
+		// Try to create Player(s) from the selected file(s)
+		if (!selectedFiles.isEmpty()) {
+			List<Player> players = null;
+			try {
+				players = createPlayers(selectedFiles);
+			} catch (UnsupportedEncodingException e1) {
+				// Notify the user that HTML files couldn't be created
+				JOptionPane.showMessageDialog(null,
+						"The selected file(s) could not be read as player "
+								+ "data. The application will now terminate.",
+						"Cannot Read File(s)", JOptionPane.ERROR_MESSAGE);
+			}
+
+			// Try to create the HTML file(s) for the Player(s)
+			if (players != null && !players.isEmpty()) {
+				try {
+					createHTMLFiles(players);
+				} catch (IOException e) {
+					// Notify the user that HTML files couldn't be created
+					JOptionPane.showMessageDialog(null,
+							"Could not create HTML file(s) for the selected "
+									+ "Player(s). The application will now "
+									+ "terminate.",
+							"HTML Creation Failure", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				// No Player(s) created
+				// Notify the user that the application will terminate
+				JOptionPane.showMessageDialog(null,
+						"Could not create Players from the selected file(s). "
+								+ "The application will now terminate.",
+						"Player Creation Failure", JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			// No files selected
+			// Notify the user that the application will terminate
+			JOptionPane.showMessageDialog(null,
+					"No files were selected. The application will now "
+							+ "terminate.",
+					"No Selection", JOptionPane.ERROR_MESSAGE);
+		}
+	}
 }
