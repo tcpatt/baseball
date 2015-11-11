@@ -12,9 +12,8 @@ package tmn.java.project;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,15 +59,15 @@ public class Controller {
 	 *            The list of files from which to try to create {@link Player}
 	 *            objects
 	 * @return The list of {@link Player} objects created by this method
-	 * @throws UnsupportedEncodingException
+	 * @throws IOException
 	 */
 	private static List<Player> createPlayers(List<File> files)
-			throws UnsupportedEncodingException {
+			throws IOException {
 		List<Player> players = new ArrayList<Player>();
 		for (File file : files) {
-			// Create the Player from the input file
-			Reader reader = new InputStreamReader(
-					Player.class.getResourceAsStream(file.getName()), "UTF-8");
+			// Player player = new Player();
+			// player.assignFromJson(file);
+			Reader reader = Files.newBufferedReader(file.toPath());
 			Gson gson = new Gson();
 			Player player = gson.fromJson(reader, Player.class);
 			players.add(player);
@@ -124,7 +123,7 @@ public class Controller {
 			List<Player> players = null;
 			try {
 				players = createPlayers(selectedFiles);
-			} catch (UnsupportedEncodingException e1) {
+			} catch (IOException e1) {
 				// Notify the user that HTML files couldn't be created
 				JOptionPane.showMessageDialog(null,
 						"The selected file(s) could not be read as player "

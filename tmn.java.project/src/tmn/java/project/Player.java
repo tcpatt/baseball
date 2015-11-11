@@ -13,7 +13,6 @@ package tmn.java.project;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
@@ -29,7 +28,7 @@ public class Player {
 	/**
 	 * Player ID number
 	 */
-	private Integer Id;
+	private int id;
 
 	/**
 	 * List of games for this player
@@ -42,54 +41,43 @@ public class Player {
 	private String name;
 
 	/**
-	 * The URL for an stock photo of the player
+	 * The String representation of the URL for a stock photo of the player
 	 */
-	private URL imagePath;
+	private String image;
 
 	/**
 	 * The constructor
 	 */
 	public Player() {
-		setId(null);
+		setId(-1);
 		setGames(null);
 		setName(null);
 		setImagePath(null);
 	}
 
 	/**
-	 * Player constructor that gets data from a .json file
-	 * 
-	 * @param playerJSON
-	 *            The .json file containing player data with which to construct
-	 *            an object of type Player.
-	 * @throws IOException
-	 */
-	public Player(File playerJSON) {
-	}
-
-	/**
 	 * Retrieve the player ID
 	 * 
-	 * @return The Integer ID for this Player
+	 * @return The ID for this Player
 	 */
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	/**
 	 * Set the player ID
 	 * 
 	 * @param id
-	 *            The Integer to set this Player's ID to
+	 *            The value to set this Player's ID to
 	 */
-	public void setId(Integer id) {
-		Id = id;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
 	 * Retrieve this player's games
 	 * 
-	 * @return The List of Game objects for this Player
+	 * @return The List of {@link Game} objects for this Player
 	 */
 	public List<Game> getGames() {
 		return games;
@@ -99,7 +87,7 @@ public class Player {
 	 * Set this player's games data
 	 * 
 	 * @param games
-	 *            The List of Game objects to set for this Player
+	 *            The List of {@link Game} objects to set for this Player
 	 */
 	public void setGames(List<Game> games) {
 		this.games = games;
@@ -127,24 +115,26 @@ public class Player {
 	/**
 	 * Retrieve the path to this player's photo
 	 * 
-	 * @return The URL that leads o photo of this Player
+	 * @return The String representation of the URL that leads o photo of this
+	 *         player
 	 */
-	public URL getImagePath() {
-		return imagePath;
+	public String getImagePath() {
+		return image;
 	}
 
 	/**
 	 * Set the URL for a photo of this player
 	 * 
 	 * @param imagePath
-	 *            The URL to a photo to set this Player
+	 *            The String representation of the URL for a photo to set for
+	 *            this player
 	 */
-	public void setImagePath(URL imagePath) {
-		this.imagePath = imagePath;
+	public void setImagePath(String imagePath) {
+		this.image = imagePath;
 	}
 
 	/**
-	 * Generate an HTML file containing the Player's data in order to display
+	 * Generate an HTML file containing the player's data in order to display
 	 * this information in a web browser
 	 * 
 	 * @param fileToWrite
@@ -155,6 +145,6 @@ public class Player {
 		BufferedWriter writer = Files.newBufferedWriter(fileToWrite.toPath(),
 				Charset.forName("UTF-8"));
 		writer.write(fileToWrite.getName());
+		writer.close();
 	}
-
 }

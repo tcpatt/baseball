@@ -10,9 +10,6 @@
  *******************************************************************************/
 package tmn.java.project;
 
-import java.net.URL;
-import java.util.Date;
-
 /**
  * This class defines Game objects by providing storage for game data and
  * methods for game data assignment and retrieval.
@@ -24,47 +21,47 @@ public class Game {
 	/**
 	 * The RBI recorded for this game
 	 */
-	private int rbi;
+	private int RBI;
 
 	/**
 	 * The AB recorded for this game
 	 */
-	private int atBats;
-
-	/**
-	 * The H recorded for this game
-	 */
-	private int hits;
+	private int AB;
 
 	/**
 	 * The path to the opposing team's logo
 	 */
-	private URL opponentImg;
+	private String oppImage;
 
 	/**
 	 * The opposing team's three letter ID
 	 */
-	private String opponentId;
+	private String opp;
 
 	/**
 	 * The HR recorded for this game
 	 */
-	private int homeRuns;
+	private int HR;
 
 	/**
 	 * The player's team's three letter ID
 	 */
-	private String playerTeamId;
+	private String team;
+
+	/**
+	 * The H recorded for this game
+	 */
+	private int H;
 
 	/**
 	 * The path to the player's team's logo
 	 */
-	private URL playerTeamImg;
+	private String teamImage;
 
 	/**
 	 * The date for when this game took place
 	 */
-	private Date gameDate;
+	private String date;
 
 	/**
 	 * Retrieve the player's RBI total for this game
@@ -72,7 +69,7 @@ public class Game {
 	 * @return The total number of RBI recorded for the Player in this Game
 	 */
 	public int getRbi() {
-		return rbi;
+		return RBI;
 	}
 
 	/**
@@ -82,7 +79,7 @@ public class Game {
 	 *            The value to set for the RBI count
 	 */
 	public void setRbi(int rbi) {
-		this.rbi = rbi;
+		this.RBI = rbi;
 	}
 
 	/**
@@ -91,7 +88,7 @@ public class Game {
 	 * @return The total number of AB recorded for the Player for this Game
 	 */
 	public int getAtBats() {
-		return atBats;
+		return AB;
 	}
 
 	/**
@@ -101,7 +98,7 @@ public class Game {
 	 *            The value to set for the AB count
 	 */
 	public void setAtBats(int atBats) {
-		this.atBats = atBats;
+		this.AB = atBats;
 	}
 
 	/**
@@ -110,7 +107,7 @@ public class Game {
 	 * @return The total number of H recorded for the Player for this Game
 	 */
 	public int getHits() {
-		return hits;
+		return H;
 	}
 
 	/**
@@ -120,27 +117,30 @@ public class Game {
 	 *            The value to set for the H count
 	 */
 	public void setHits(int hits) {
-		this.hits = hits;
+		this.H = hits;
 	}
 
 	/**
-	 * Retrieve the URL for the image of the logo for the opponent in this game
+	 * Retrieve the String representation of the URL for the image of the logo
+	 * for the opponent in this game
 	 * 
-	 * @return The URL for the image of the logo for the opponent in this game
+	 * @return The String of the URL for the image of the logo for the opponent
+	 *         in this game
 	 */
-	public URL getOpponentImg() {
-		return opponentImg;
+	public String getOpponentImg() {
+		return oppImage;
 	}
 
 	/**
-	 * Set the URL for the image of the logo for the opponent in this game
+	 * Set the String representation of the URL for the image of the logo for
+	 * the opponent in this game
 	 * 
 	 * @param opponentImg
-	 *            The URL to set as the path to the image of the logo for the
-	 *            opponent in this game
+	 *            The String of the URL to set as the path to the image of the
+	 *            logo for the opponent in this game
 	 */
-	public void setOpponentImg(URL opponentImg) {
-		this.opponentImg = opponentImg;
+	public void setOpponentImg(String opponentImg) {
+		this.oppImage = opponentImg;
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class Game {
 	 * @return The three letter ID for the opponent in this game
 	 */
 	public String getOpponentId() {
-		return opponentId;
+		return opp;
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class Game {
 	 *            The value to set the opponent's three letter ID to
 	 */
 	public void setOpponentId(String opponentId) {
-		this.opponentId = opponentId;
+		this.opp = opponentId;
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class Game {
 	 * @return The total number of HR recorded for the Player in this Game
 	 */
 	public int getHomeRuns() {
-		return homeRuns;
+		return HR;
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class Game {
 	 *            The value to set for the HR count
 	 */
 	public void setHomeRuns(int homeRuns) {
-		this.homeRuns = homeRuns;
+		this.HR = homeRuns;
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class Game {
 	 * @return The three letter ID for the Player's team
 	 */
 	public String getPlayerTeamId() {
-		return playerTeamId;
+		return team;
 	}
 
 	/**
@@ -197,26 +197,28 @@ public class Game {
 	 *            The value to set for the player's team ID
 	 */
 	public void setPlayerTeamId(String playerTeamId) {
-		this.playerTeamId = playerTeamId;
+		this.team = playerTeamId;
 	}
 
 	/**
 	 * Retrieve the URL for the image of the player's team's logo
 	 * 
-	 * @return The URL for the image of the player's team's logo
+	 * @return The String representation of the URL for the image of the
+	 *         player's team's logo
 	 */
-	public URL getPlayerTeamImg() {
-		return playerTeamImg;
+	public String getPlayerTeamImg() {
+		return teamImage;
 	}
 
 	/**
 	 * Set the URL for the image of the player's team's logo
 	 * 
 	 * @param playerTeamImg
-	 *            The URL for the image of the player's team's logo
+	 *            The String representation of the URL for the image of the
+	 *            player's team's logo
 	 */
-	public void setPlayerTeamImg(URL playerTeamImg) {
-		this.playerTeamImg = playerTeamImg;
+	public void setPlayerTeamImg(String playerTeamImg) {
+		this.teamImage = playerTeamImg;
 	}
 
 	/**
@@ -224,8 +226,8 @@ public class Game {
 	 * 
 	 * @return The date for this game
 	 */
-	public Date getGameDate() {
-		return gameDate;
+	public String getGameDate() {
+		return date;
 	}
 
 	/**
@@ -234,7 +236,7 @@ public class Game {
 	 * @param gameDate
 	 *            The value to set for the date of this game
 	 */
-	public void setGameDate(Date gameDate) {
-		this.gameDate = gameDate;
+	public void setGameDate(String gameDate) {
+		this.date = gameDate;
 	}
 }
