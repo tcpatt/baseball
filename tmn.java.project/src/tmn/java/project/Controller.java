@@ -63,13 +63,15 @@ public class Controller {
 	 */
 	private static List<Player> createPlayers(List<File> files)
 			throws IOException {
+		// Initialize a list of Player objects to return
 		List<Player> players = new ArrayList<Player>();
+
 		for (File file : files) {
-			// Player player = new Player();
-			// player.assignFromJson(file);
+			// Read the file and initialize a Player object from the contents
 			Reader reader = Files.newBufferedReader(file.toPath());
 			Gson gson = new Gson();
 			Player player = gson.fromJson(reader, Player.class);
+			// Add the Player to the list to be returned
 			players.add(player);
 		}
 		return players;
@@ -81,43 +83,46 @@ public class Controller {
 	 * 
 	 * @param players
 	 *            The list of {@link Player} objects to use to create HTML files
+	 * @return The list of Strings for the path to the created files
 	 * @throws IOException
 	 */
-	private static void createHTMLFiles(List<Player> players)
+	private static List<String> createHTMLFiles(List<Player> players)
 			throws IOException {
-		// Create the /html directory
-		String prefixStr = System.getProperty("user.dir")
+		// Initialize a list of files to return
+		List<String> files = new ArrayList<String>();
+
+		// Create the String representation of the /html directory
+		String htmlDirStr = System.getProperty("user.dir")
 				+ System.getProperty("file.separator") + "html";
-		boolean createdDir = new File(prefixStr).mkdir();
 
-		if (createdDir) {
-			// Create the player data HTML files
-			for (Player player : players) {
-				// Initialize a file
-				String fileName = prefixStr
-						+ System.getProperty("file.separator") + player.getId()
-						+ ".html";
-				File fileToWrite = new File(fileName);
-				// If the file already exists, append a number in parentheses
-				int index = 0;
-				while (!fileToWrite.createNewFile()) {
-					// Find the start of .html or (<index>).html in the filename
-					int ndxExtStart = Math.min(fileName.indexOf(".html"),
-							fileName.indexOf("\\(.+?\\)"));
-					// Get everything before the index and extension
-					String prefix = fileName.substring(0, ndxExtStart);
-					// Append the index and extension back on
-					fileName = prefix + "(" + index++ + ")" + ".html";
-					// Try to create this file
-					fileToWrite = new File(fileName);
-				}
+		// If the directory doesn't already exist, create it
+		File htmlDir = new File(htmlDirStr);
+		if (!htmlDir.exists() && !htmlDir.isDirectory())
+			htmlDir.mkdir();
 
-				// Write the player data to ./html/<player-id>.html
-				player.writeToHTML(fileToWrite);
+		// Create the player data HTML files
+		for (Player player : players) {
+			// Initialize a file
+			String fileName = htmlDirStr + System.getProperty("file.separator")
+					+ player.getId() + ".html";
+			File fileToWrite = new File(fileName);
+			// If the file already exists, append a number in parentheses
+			int index = 0;
+			while (!fileToWrite.createNewFile()) {
+				// Append (<index>).html after the Player ID
+				fileName = htmlDirStr + System.getProperty("file.separator")
+						+ player.getId() + "(" + ++index + ")" + ".html";
+				// Try to create a file with this name
+				fileToWrite = new File(fileName);
 			}
-		} else {
-			throw new IOException();
+
+			// Write the player data to ./html/<player-id>.html
+			player.writeToHTML(fileToWrite);
+
+			// Add the filename to the return list
+			files.add(fileToWrite.getAbsolutePath());
 		}
+		return files;
 	}
 
 	/*
@@ -142,8 +147,15 @@ public class Controller {
 
 			// Try to create the HTML file(s) for the Player(s)
 			if (players != null && !players.isEmpty()) {
+				List<String> htmlFileNames = null;
 				try {
-					createHTMLFiles(players);
+					htmlFileNames = createHTMLFiles(players);
+					String fileListStr = "";
+					for (String fileName : htmlFileNames)
+						fileListStr += fileName + "\n";
+					JOptionPane.showMessageDialog(null,
+							"The following files were created:\n" + fileListStr,
+							"Files Created", JOptionPane.INFORMATION_MESSAGE);
 				} catch (IOException e) {
 					// Notify the user that HTML files couldn't be created
 					JOptionPane.showMessageDialog(null,
