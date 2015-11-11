@@ -85,29 +85,38 @@ public class Controller {
 	 */
 	private static void createHTMLFiles(List<Player> players)
 			throws IOException {
-		for (Player player : players) {
-			// Initialize a file
-			String fileName = System.getProperty("user.dir")
-					+ System.getProperty("file.separator") + "html"
-					+ System.getProperty("file.separator") + player.getId()
-					+ ".html";
-			File fileToWrite = new File(fileName);
-			// If the file already exists, append a number in parentheses
-			int index = 0;
-			while (!fileToWrite.createNewFile()) {
-				// Find the start of .html or (<index>).html in the filename
-				int ndxExtStart = Math.min(fileName.indexOf(".html"),
-						fileName.indexOf("\\(.+?\\)"));
-				// Get everything before the index and extension
-				String prefix = fileName.substring(0, ndxExtStart);
-				// Append the index and extension back on
-				fileName = prefix + "(" + index++ + ")" + ".html";
-				// Try to create this file
-				fileToWrite = new File(fileName);
-			}
+		// Create the /html directory
+		String prefixStr = System.getProperty("user.dir")
+				+ System.getProperty("file.separator") + "html";
+		boolean createdDir = new File(prefixStr).mkdir();
 
-			// Write the player data to ./html/<player-id>.html
-			player.writeToHTML(fileToWrite);
+		if (createdDir) {
+			// Create the player data HTML files
+			for (Player player : players) {
+				// Initialize a file
+				String fileName = prefixStr
+						+ System.getProperty("file.separator") + player.getId()
+						+ ".html";
+				File fileToWrite = new File(fileName);
+				// If the file already exists, append a number in parentheses
+				int index = 0;
+				while (!fileToWrite.createNewFile()) {
+					// Find the start of .html or (<index>).html in the filename
+					int ndxExtStart = Math.min(fileName.indexOf(".html"),
+							fileName.indexOf("\\(.+?\\)"));
+					// Get everything before the index and extension
+					String prefix = fileName.substring(0, ndxExtStart);
+					// Append the index and extension back on
+					fileName = prefix + "(" + index++ + ")" + ".html";
+					// Try to create this file
+					fileToWrite = new File(fileName);
+				}
+
+				// Write the player data to ./html/<player-id>.html
+				player.writeToHTML(fileToWrite);
+			}
+		} else {
+			throw new IOException();
 		}
 	}
 
