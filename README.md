@@ -1,2 +1,2 @@
-# baseball
-A place to store some of my baseball analytics work.
+# tmn
+A repo for two sample projects.
