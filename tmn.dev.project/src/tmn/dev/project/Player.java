@@ -204,10 +204,6 @@ public class Player {
 		// Compute the values we will need
 		computeTotalsAndAvg();
 
-		// Format the final batting average to the typical .xxx format
-		String BA = String.format("%.3g%n", avgRunCalc[avgRunCalc.length - 1]);
-		BA = BA.substring(1);
-
 		// Initialize the file writer
 		BufferedWriter writer = Files.newBufferedWriter(fileToWrite.toPath(),
 				Charset.forName("UTF-8"));
@@ -216,6 +212,40 @@ public class Player {
 		writeHeader(writer);
 
 		// Write the player data to HTML
+		writeStatBoxes(writer);
+
+		// Write the batting average plot
+		writeBAPlot(writer);
+
+		// Write the NTML file footer
+		writeFooter(writer);
+
+		// Close the file
+		writer.close();
+	}
+
+	/**
+	 * Write the HTML file header for the file created by the writeToHTML(File)
+	 * method.
+	 * 
+	 * @param writer
+	 *            The Writer that is writing the HTML file
+	 * @throws IOException
+	 */
+	private void writeHeader(BufferedWriter writer) throws IOException {
+		writer.write("<!DOCTYPE html>\n<html>\n<head>\n<title>" + name
+				+ "</title>\n<link rel=\"stylesheet\" type=\"text/css\" "
+				+ "href=\"../css/playerCard.css\"></head>\n<body>");
+	}
+
+	/**
+	 * Write the statistics to the HTML file.
+	 * 
+	 * @param writer
+	 *            The Writer that is writing the HTML file
+	 * @throws IOException
+	 */
+	private void writeStatBoxes(BufferedWriter writer) throws IOException {
 		writer.write("<div class=\"banner\"><h1 id=\"name\">" + name
 				+ "</h1></div>");
 
@@ -232,28 +262,21 @@ public class Player {
 
 		writer.write("</div>");
 
+		// Format the final batting average to the typical .xxx format
+		String BA = String.format("%.3g%n", avgRunCalc[avgRunCalc.length - 1]);
+		BA = BA.substring(1);
+
 		writer.write("<div class=\"col-full stat\"><h2 id=\"avg\">BA<br />" + BA
 				+ "</h2></div>");
-
-		// Write the NTML file footer
-		writeFooter(writer);
-
-		// Close the file
-		writer.close();
 	}
 
 	/**
-	 * Write the HTML file header for the file created by the writeToHTML(File)
-	 * method.
+	 * Write the batting average plot information in the HTML file.
 	 * 
 	 * @param writer
-	 *            The Writer that is writing this file
-	 * @throws IOException
+	 *            The Writer that is writing the HTML file
 	 */
-	private void writeHeader(BufferedWriter writer) throws IOException {
-		writer.write("<!DOCTYPE html>\n<html>\n<head>\n<title>" + name
-				+ "</title>\n<link rel=\"stylesheet\" type=\"text/css\" "
-				+ "href=\"../css/playerCard.css\"></head>\n<body>");
+	private void writeBAPlot(BufferedWriter writer) {
 	}
 
 	/**
@@ -261,7 +284,7 @@ public class Player {
 	 * method.
 	 * 
 	 * @param writer
-	 *            The Writer that is writing this file
+	 *            The Writer that is writing the HTML file
 	 * @throws IOException
 	 */
 	private void writeFooter(BufferedWriter writer) throws IOException {
