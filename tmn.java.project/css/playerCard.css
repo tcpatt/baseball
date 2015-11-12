@@ -1,56 +1,65 @@
+
+<!--
+	/**************************************************************************
+    * Copyright (c) 2015 Taylor Patterson
+    * All rights reserved. This program and the accompanying materials
+    * are made available under the terms of the Eclipse Public License v1.0
+    * which accompanies this distribution, and is available at
+    * http://www.eclipse.org/legal/epl-v10.html
+    *
+    * Contributors:
+    *   Taylor Patterson - Initial implementation and documentation
+    **************************************************************************/
+-->
 * {
 	box-sizing: border-box;
+}
+
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
 }
 
 html {
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
-.row:after {
-	content: "";
-	clear: both;
-	display: block;
+.wrapper {
+	margin: 0 auto;
+}
+
+.row {
+	margin: 0 auto;
 }
 
 [class*="col-"] {
-	float: center;
-	padding: 15px;
+	float: left;
+	padding: 10px;
 }
 
-.col-1 {
-	width: 25%;
-}
-
-.col-2 {
-	width: 50%;
-}
-
-.col-3 {
-	width: 75%;
-}
-
-.col-4 {
-	width: 100%;
-}
-
-.banner {
-	color: #F0D8B6;
-	background-color: #8F241A;
-	text-align: center;
-	padding: 25px;
-}
-
-.stat {
-	color: #F0D886;
-	background-color: #263940;
-	text-align: center;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-left: 10px;
-	margin-right: 10px;
-	padding: 0px;
-}
-
-body {
-	background-color: #F0D8B6;
+@media all and ( min-width: 600px ) {
+	.col-qrtr {
+		width: 25%;
+	}
+	.col-half {
+		width: 50%;
+	}
+	.col-full {
+		width: 100%;
+	}
+	.banner {
+		color: #F0D8B6;
+		background-color: #8F241A;
+		text-align: center;
+		padding: 25px;
+	}
+	.stat {
+		color: #F0D886;
+		background-color: #263940;
+		text-align: center;
+	}
+	body {
+		background-color: #F0D8B6;
+	}
 }
