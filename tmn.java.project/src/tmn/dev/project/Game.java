@@ -8,7 +8,7 @@
  * Contributors:
  *   Taylor Patterson - Initial implementation and documentation
  *******************************************************************************/
-package tmn.java.project;
+package tmn.dev.project;
 
 /**
  * This class defines Game objects by providing storage for game data and

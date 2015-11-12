@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import tmn.java.project.Player;
+import tmn.dev.project.Player;
 
 /**
  * This class defines the JUnit tests for {@link Player} objects.
@@ -24,7 +24,7 @@ import tmn.java.project.Player;
 public class PlayerTester {
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#Player()}.
+	 * Test method for {@link tmn.dev.project.Player#Player()}.
 	 */
 	@Test
 	public void testPlayer() {
@@ -32,7 +32,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#Player(java.io.File)}.
+	 * Test method for {@link tmn.dev.project.Player#Player(java.io.File)}.
 	 */
 	@Test
 	public void testPlayerFile() {
@@ -40,7 +40,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#getId()}.
+	 * Test method for {@link tmn.dev.project.Player#getId()}.
 	 */
 	@Test
 	public void testGetId() {
@@ -48,7 +48,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#setId(java.lang.Integer)}.
+	 * Test method for {@link tmn.dev.project.Player#setId(java.lang.Integer)}.
 	 */
 	@Test
 	public void testSetId() {
@@ -56,7 +56,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#getGames()}.
+	 * Test method for {@link tmn.dev.project.Player#getGames()}.
 	 */
 	@Test
 	public void testGetGames() {
@@ -64,7 +64,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#setGames(java.util.List)}.
+	 * Test method for {@link tmn.dev.project.Player#setGames(java.util.List)}.
 	 */
 	@Test
 	public void testSetGames() {
@@ -72,7 +72,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#getName()}.
+	 * Test method for {@link tmn.dev.project.Player#getName()}.
 	 */
 	@Test
 	public void testGetName() {
@@ -80,7 +80,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#setName(java.lang.String)}
+	 * Test method for {@link tmn.dev.project.Player#setName(java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -89,7 +89,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#getImagePath()}.
+	 * Test method for {@link tmn.dev.project.Player#getImagePath()}.
 	 */
 	@Test
 	public void testGetImagePath() {
@@ -98,7 +98,7 @@ public class PlayerTester {
 
 	/**
 	 * Test method for
-	 * {@link tmn.java.project.Player#setImagePath(java.net.URL)}.
+	 * {@link tmn.dev.project.Player#setImagePath(java.net.URL)}.
 	 */
 	@Test
 	public void testSetImagePath() {
@@ -106,7 +106,7 @@ public class PlayerTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Player#writeToHTML(java.net.URL)}
+	 * Test method for {@link tmn.dev.project.Player#writeToHTML(java.net.URL)}
 	 * .
 	 */
 	@Test

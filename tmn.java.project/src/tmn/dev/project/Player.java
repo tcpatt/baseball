@@ -8,7 +8,7 @@
  * Contributors:
  *   Taylor Patterson - Initial implementation and documentation
  *******************************************************************************/
-package tmn.java.project;
+package tmn.dev.project;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -221,18 +221,18 @@ public class Player {
 
 		writer.write("<div class=\"row\">");
 
-		writer.write("<div class=\"col-1 stat\"><h2 id=\"hits\">H<br />"
+		writer.write("<div class=\"col-qrtr stat\"><h2 id=\"hits\">H<br />"
 				+ hRunTot[hRunTot.length - 1] + "</h2></div>");
-		writer.write("<div class=\"col-1 stat\"><h2 id=\"atBats\">AB<br />"
+		writer.write("<div class=\"col-qrtr stat\"><h2 id=\"atBats\">AB<br />"
 				+ abRunTot[abRunTot.length - 1] + "</h2></div>");
-		writer.write("<div class=\"col-1 stat\"><h2 id=\"rbi\">RBI<br />"
+		writer.write("<div class=\"col-qrtr stat\"><h2 id=\"rbi\">RBI<br />"
 				+ rbiRunTot[rbiRunTot.length - 1] + "</h2></div>");
-		writer.write("<div class=\"col-1 stat\"><h2 id=\"homeRuns\">HR<br />"
+		writer.write("<div class=\"col-qrtr stat\"><h2 id=\"homeRuns\">HR<br />"
 				+ hrRunTot[hrRunTot.length - 1] + "</h2></div>");
 
 		writer.write("</div>");
 
-		writer.write("<div class=\"col-4 stat\"><h2 id=\"avg\">BA<br />" + BA
+		writer.write("<div class=\"col-full stat\"><h2 id=\"avg\">BA<br />" + BA
 				+ "</h2></div>");
 
 		// Write the NTML file footer

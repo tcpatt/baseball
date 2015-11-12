@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import tmn.java.project.Game;
+import tmn.dev.project.Game;
 
 /**
  * This class defines the JUnit tests for {@link Game} objects.
@@ -24,7 +24,7 @@ import tmn.java.project.Game;
 public class GameTester {
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getRbi()}.
+	 * Test method for {@link tmn.dev.project.Game#getRbi()}.
 	 */
 	@Test
 	public void testGetRbi() {
@@ -32,7 +32,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#setRbi(int)}.
+	 * Test method for {@link tmn.dev.project.Game#setRbi(int)}.
 	 */
 	@Test
 	public void testSetRbi() {
@@ -40,7 +40,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getAtBats()}.
+	 * Test method for {@link tmn.dev.project.Game#getAtBats()}.
 	 */
 	@Test
 	public void testGetAtBats() {
@@ -48,7 +48,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#setAtBats(int)}.
+	 * Test method for {@link tmn.dev.project.Game#setAtBats(int)}.
 	 */
 	@Test
 	public void testSetAtBats() {
@@ -56,7 +56,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getHits()}.
+	 * Test method for {@link tmn.dev.project.Game#getHits()}.
 	 */
 	@Test
 	public void testGetHits() {
@@ -64,7 +64,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#setHits(int)}.
+	 * Test method for {@link tmn.dev.project.Game#setHits(int)}.
 	 */
 	@Test
 	public void testSetHits() {
@@ -72,7 +72,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getOpponentImg()}.
+	 * Test method for {@link tmn.dev.project.Game#getOpponentImg()}.
 	 */
 	@Test
 	public void testGetOpponentImg() {
@@ -81,7 +81,7 @@ public class GameTester {
 
 	/**
 	 * Test method for
-	 * {@link tmn.java.project.Game#setOpponentImg(java.net.URL)}.
+	 * {@link tmn.dev.project.Game#setOpponentImg(java.net.URL)}.
 	 */
 	@Test
 	public void testSetOpponentImg() {
@@ -89,7 +89,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getOpponentId()}.
+	 * Test method for {@link tmn.dev.project.Game#getOpponentId()}.
 	 */
 	@Test
 	public void testGetOpponentId() {
@@ -98,7 +98,7 @@ public class GameTester {
 
 	/**
 	 * Test method for
-	 * {@link tmn.java.project.Game#setOpponentId(java.lang.String)}.
+	 * {@link tmn.dev.project.Game#setOpponentId(java.lang.String)}.
 	 */
 	@Test
 	public void testSetOpponentId() {
@@ -106,7 +106,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getHomeRuns()}.
+	 * Test method for {@link tmn.dev.project.Game#getHomeRuns()}.
 	 */
 	@Test
 	public void testGetHomeRuns() {
@@ -114,7 +114,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#setHomeRuns(int)}.
+	 * Test method for {@link tmn.dev.project.Game#setHomeRuns(int)}.
 	 */
 	@Test
 	public void testSetHomeRuns() {
@@ -122,7 +122,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getPlayerTeamId()}.
+	 * Test method for {@link tmn.dev.project.Game#getPlayerTeamId()}.
 	 */
 	@Test
 	public void testGetPlayerTeamId() {
@@ -131,7 +131,7 @@ public class GameTester {
 
 	/**
 	 * Test method for
-	 * {@link tmn.java.project.Game#setPlayerTeamId(java.lang.String)}.
+	 * {@link tmn.dev.project.Game#setPlayerTeamId(java.lang.String)}.
 	 */
 	@Test
 	public void testSetPlayerTeamId() {
@@ -139,7 +139,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getPlayerTeamImg()}.
+	 * Test method for {@link tmn.dev.project.Game#getPlayerTeamImg()}.
 	 */
 	@Test
 	public void testGetPlayerTeamImg() {
@@ -148,7 +148,7 @@ public class GameTester {
 
 	/**
 	 * Test method for
-	 * {@link tmn.java.project.Game#setPlayerTeamImg(java.net.URL)}.
+	 * {@link tmn.dev.project.Game#setPlayerTeamImg(java.net.URL)}.
 	 */
 	@Test
 	public void testSetPlayerTeamImg() {
@@ -156,7 +156,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#getGameDate()}.
+	 * Test method for {@link tmn.dev.project.Game#getGameDate()}.
 	 */
 	@Test
 	public void testGetGameDate() {
@@ -164,7 +164,7 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for {@link tmn.java.project.Game#setGameDate(java.util.Date)}
+	 * Test method for {@link tmn.dev.project.Game#setGameDate(java.util.Date)}
 	 * .
 	 */
 	@Test

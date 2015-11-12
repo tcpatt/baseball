@@ -8,7 +8,7 @@
  * Contributors:
  *   Taylor Patterson - Initial implementation and documentation
  *******************************************************************************/
-package tmn.java.project;
+package tmn.dev.project;
 
 import java.io.File;
 import java.io.IOException;
