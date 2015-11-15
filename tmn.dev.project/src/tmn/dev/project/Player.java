@@ -18,10 +18,8 @@ import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import javax.swing.JFrame;
-
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
@@ -210,36 +208,55 @@ public class Player {
 	 * Generate a plot of batting average over the span of a season and write
 	 * the plot to a PNG file.
 	 * 
-	 * @return The String representation of the path to the PNG file containing
+	 * @return The String representation of the name of the PNG file containing
 	 *         the plot.
+	 * @throws IOException
 	 */
-	private String createBAPlot() {
+	private String createBAPlot() throws IOException {
 
-		JFrame frame = new JFrame("Plot Application");
-
+		// Create a scatter plot for batting average over the season
+		// Game number on the x axis, Batting average on the y axis
 		JFreeChart chart = ChartFactory.createScatterPlot(
 				"Batting Average Throughout the Season", "Game Number",
 				"Batting Average", new XYSeriesCollection(baGame),
 				PlotOrientation.VERTICAL, false, false, false);
 		XYPlot plot = chart.getXYPlot();
+		// Set the axis ranges to provide an appropriate zoom
 		NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
 		xAxis.setRange(baGame.getMinX(), baGame.getMaxX());
 		NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
 		yAxis.setRange(baGame.getMinY() - .02, baGame.getMaxY() + .02);
+		// Set the tick labels on the y axis to the typical BA format
 		yAxis.setNumberFormatOverride(new DecimalFormat(".000"));
 
-		ChartPanel panel = new ChartPanel(chart, true);
-		panel.setPreferredSize(new java.awt.Dimension(800, 450));
-		panel.setMinimumDrawHeight(10);
-		panel.setMaximumDrawHeight(2000);
-		panel.setMinimumDrawWidth(20);
-		panel.setMaximumDrawWidth(2000);
+		// Create the String representation of the /images directory
+		String imgDirStr = System.getProperty("user.dir")
+				+ System.getProperty("file.separator") + "images";
 
-		frame.setContentPane(panel);
-		frame.pack();
-		frame.setVisible(true);
+		// If the directory doesn't already exist, create it
+		File imgDir = new File(imgDirStr);
+		if (!imgDir.exists() && !imgDir.isDirectory())
+			imgDir.mkdir();
 
-		return null;
+		// Create the batting average PNG files
+		String fileName = imgDirStr + System.getProperty("file.separator")
+				+ this.getId() + ".png";
+		File imgFile = new File(fileName);
+
+		// If the file already exists, append a number in parentheses
+		int index = 0;
+		while (!imgFile.createNewFile()) {
+			// Append (<index>).html after the Player ID
+			fileName = imgDirStr + System.getProperty("file.separator")
+					+ this.getId() + "(" + ++index + ")" + ".png";
+			// Try to create a file with this name
+			imgFile = new File(fileName);
+		}
+
+		// Write the plot to the PNG file that was created
+		ChartUtilities.saveChartAsPNG(imgFile, chart, 800, 450);
+
+		return imgFile.getName();
 	}
 
 	/**
@@ -255,7 +272,7 @@ public class Player {
 		computeTotalsAndAvg();
 
 		// Create the batting average over time plot
-		String baPlotPath = createBAPlot();
+		String baPlotName = createBAPlot();
 
 		// Initialize the file writer
 		BufferedWriter writer = Files.newBufferedWriter(fileToWrite.toPath(),
@@ -268,7 +285,7 @@ public class Player {
 		writeStatBoxes(writer);
 
 		// Write the batting average plot
-		writeBAPlot(writer, baPlotPath);
+		writeBAPlot(writer, baPlotName);
 
 		// Write the NTML file footer
 		writeFooter(writer);
@@ -329,11 +346,14 @@ public class Player {
 	 * 
 	 * @param writer
 	 *            The Writer that is writing the HTML file
-	 * @param baPlotPath
-	 *            The String representation of the path to the file containing
+	 * @param baPlotName
+	 *            The String representation of the name of the file containing
 	 *            the plot of batting average over the span of a season
+	 * @throws IOException
 	 */
-	private void writeBAPlot(BufferedWriter writer, String baPlotPath) {
+	private void writeBAPlot(BufferedWriter writer, String baPlotName)
+			throws IOException {
+		writer.write("<img src=\"../images/" + baPlotName + "\">");
 	}
 
 	/**
