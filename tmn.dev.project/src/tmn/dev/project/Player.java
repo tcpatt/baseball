@@ -10,20 +10,24 @@
  *******************************************************************************/
 package tmn.dev.project;
 
-import java.awt.RenderingHints;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.swing.JFrame;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.FastScatterPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  * This class defines Player objects by providing storage for player data and
@@ -74,11 +78,11 @@ public class Player {
 	private int[] hrRunTot;
 
 	/**
-	 * The computed batting average following each game. avgRunCalc[0][] is the
-	 * game number 1 to 162 (or whatever the number of games for this player
-	 * is). avgRunCalc[1][] is the batting average following the game.
+	 * The computed batting average following each game. The x values in the
+	 * series represent the game number, and the y values represent the player's
+	 * batting average following that game.
 	 */
-	private float[][] avgRunCalc;
+	private XYSeries baGame;
 
 	/**
 	 * The constructor
@@ -183,15 +187,14 @@ public class Player {
 		abRunTot = new int[games.size()];
 		hRunTot = new int[games.size()];
 		hrRunTot = new int[games.size()];
-		avgRunCalc = new float[2][games.size()];
+		baGame = new XYSeries("Batting Average");
 
 		// Set the value for the first game
 		rbiRunTot[0] = games.get(0).getRbi();
 		abRunTot[0] = games.get(0).getAtBats();
 		hRunTot[0] = games.get(0).getHits();
 		hrRunTot[0] = games.get(0).getHomeRuns();
-		avgRunCalc[0][0] = (float) 1;
-		avgRunCalc[1][0] = (float) hRunTot[0] / abRunTot[0];
+		baGame.add(1, (float) hRunTot[0] / abRunTot[0]);
 
 		// Loop over the games to add to the running total vectors
 		for (int i = 1; i < games.size(); i++) {
@@ -199,8 +202,7 @@ public class Player {
 			abRunTot[i] = abRunTot[i - 1] + games.get(i).getAtBats();
 			hRunTot[i] = hRunTot[i - 1] + games.get(i).getHits();
 			hrRunTot[i] = hrRunTot[i - 1] + games.get(i).getHomeRuns();
-			avgRunCalc[0][i] = (float) i + 1;
-			avgRunCalc[1][i] = (float) hRunTot[i] / abRunTot[i];
+			baGame.add(i + 1, (float) hRunTot[i] / abRunTot[i]);
 		}
 	}
 
@@ -214,26 +216,20 @@ public class Player {
 	private String createBAPlot() {
 
 		JFrame frame = new JFrame("Plot Application");
-		// ApplicationFrame frame = new ApplicationFrame( // "BA Throughout the
-		// Season");
 
-		NumberAxis domainAxis = new NumberAxis("X");
-		domainAxis.setAutoRangeIncludesZero(false);
-		NumberAxis rangeAxis = new NumberAxis("Y");
-		rangeAxis.setAutoRangeIncludesZero(false);
-		FastScatterPlot plot = new FastScatterPlot(avgRunCalc, domainAxis,
-				rangeAxis);
-		JFreeChart chart = new JFreeChart("BA Throughout the Season", plot);
-		// chart.setLegend(null);
-
-		// force aliasing of the rendered content..
-		chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+		JFreeChart chart = ChartFactory.createScatterPlot(
+				"Batting Average Throughout the Season", "Game Number",
+				"Batting Average", new XYSeriesCollection(baGame),
+				PlotOrientation.VERTICAL, false, false, false);
+		XYPlot plot = chart.getXYPlot();
+		NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
+		xAxis.setRange(baGame.getMinX(), baGame.getMaxX());
+		NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+		yAxis.setRange(baGame.getMinY() - .02, baGame.getMaxY() + .02);
+		yAxis.setNumberFormatOverride(new DecimalFormat(".000"));
 
 		ChartPanel panel = new ChartPanel(chart, true);
-		panel.setPreferredSize(new java.awt.Dimension(500, 270));
-		// panel.setHorizontalZoom(true);
-		// panel.setVerticalZoom(true);
+		panel.setPreferredSize(new java.awt.Dimension(800, 450));
 		panel.setMinimumDrawHeight(10);
 		panel.setMaximumDrawHeight(2000);
 		panel.setMinimumDrawWidth(20);
@@ -321,7 +317,7 @@ public class Player {
 
 		// Format the final batting average to the typical .xxx format
 		String BA = String.format("%.3g%n",
-				avgRunCalc[1][avgRunCalc.length - 1]);
+				baGame.getY(baGame.getItemCount() - 1));
 		BA = BA.substring(1);
 
 		writer.write("<div class=\"col-full stat\"><h2 id=\"avg\">BA<br />" + BA
