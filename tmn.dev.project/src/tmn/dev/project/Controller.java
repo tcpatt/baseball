@@ -133,7 +133,7 @@ public class Controller {
 		List<File> selectedFiles = getFileSelection();
 
 		// Try to create Player(s) from the selected file(s)
-		if (!selectedFiles.isEmpty()) {
+		if (selectedFiles != null && !selectedFiles.isEmpty()) {
 			List<Player> players = null;
 			try {
 				players = createPlayers(selectedFiles);
