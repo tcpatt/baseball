@@ -12,6 +12,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import tmn.dev.project.Game;
@@ -22,6 +23,19 @@ import tmn.dev.project.Game;
  * @author Taylor Patterson
  */
 public class GameTester {
+
+	/**
+	 * The {@link Game} object to be used by all of the tests
+	 */
+	private Game testGame;
+
+	/**
+	 * Initialize a {@link Game} object for the tests to use.
+	 */
+	@Before
+	public void initializeGame() {
+		testGame = new Game();
+	}
 
 	/**
 	 * Test method for {@link tmn.dev.project.Game#getRbi()}.
@@ -80,8 +94,8 @@ public class GameTester {
 	}
 
 	/**
-	 * Test method for
-	 * {@link tmn.dev.project.Game#setOpponentImg(java.net.URL)}.
+	 * Test method for {@link tmn.dev.project.Game#setOpponentImg(java.net.URL)}
+	 * .
 	 */
 	@Test
 	public void testSetOpponentImg() {

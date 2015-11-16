@@ -64,6 +64,21 @@ public class Game {
 	private String date;
 
 	/**
+	 * The constructor
+	 */
+	public Game() {
+		setRbi(-1);
+		setAtBats(-1);
+		setOpponentImg(null);
+		setOpponentId(null);
+		setHomeRuns(-1);
+		setPlayerTeamId(null);
+		setHits(-1);
+		setPlayerTeamImg(null);
+		setGameDate(null);
+	}
+
+	/**
 	 * Retrieve the player's RBI total for this game
 	 * 
 	 * @return The total number of RBI recorded for the Player in this Game
