@@ -10,6 +10,11 @@
  *******************************************************************************/
 package tmn.qa.project;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
 /**
  * 
  * @author Taylor Patterson
@@ -20,6 +25,25 @@ public class TestDriver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
+		// Create a Firefox driver
+		WebDriver driver = new FirefoxDriver();
+
+		// Navigate to github.com
+		driver.get("https://github.com");
+
+		// Get the search field
+		WebElement element = driver.findElement(By.name("q"));
+
+		// Search for the repo containing this code
+		element.sendKeys("tmn");
+		element.submit();
+
+		// Click the link to the desired repository
+		driver.findElement(By.linkText("tcpatt/tmn")).click();
+
+		// Close the browser
+		driver.quit();
 	}
 
 }
