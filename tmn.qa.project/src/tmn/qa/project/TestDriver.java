@@ -42,6 +42,12 @@ public class TestDriver {
 		// Click the link to the desired repository
 		driver.findElement(By.linkText("tcpatt/tmn")).click();
 
+		// Navigate to the test file
+		driver.findElement(By.id("d4728e20f195aa3992a6172487f5f91f-abf49617197"
+				+ "196df17708d1c9fe79bbed69862ec")).click();
+		// element = driver.findElement(By.className("file"));
+		// System.out.println(element.getText());
+
 		// Close the browser
 		driver.quit();
 	}
