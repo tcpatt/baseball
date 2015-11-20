@@ -17,19 +17,21 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 /**
+ * This class provides a simple demonstration of Selenium WebDriver. It
+ * demonstrates some page navigation and form manipulation.
  * 
  * @author Taylor Patterson
  */
 public class TestDriver {
 
 	/**
-	 * @param args
+	 * Traverse some pages starting from github.com
+	 * 
+	 * @param driver
+	 *            The {@link WebDriver} object used to control browser
+	 *            interactions
 	 */
-	public static void main(String[] args) {
-
-		// Create a Firefox driver
-		WebDriver driver = new FirefoxDriver();
-
+	public static void navigateGitHub(WebDriver driver) {
 		// Navigate to github.com
 		driver.get("https://github.com");
 
@@ -62,10 +64,24 @@ public class TestDriver {
 		// + "196df17708d1c9fe79bbed69862ec")).click();
 		// element = driver.findElement(By.className("file"));
 		// System.out.println(element.getText());
+	}
 
+	/**
+	 * Navigate to TruMedia Networks' website and send them the assertion log
+	 * 
+	 * @param driver
+	 *            The {@link WebDriver} object used to control browser
+	 *            interactions
+	 */
+	public static void distributeLog(WebDriver driver) {
+		// Direct the browser to trumedianetworks.com
 		driver.get("http://www.trumedianetworks.com");
+
+		// Click on the mail icon
 		driver.findElement(By.id("email")).click();
-		element = driver.findElement(By.name("fname"));
+
+		// Complete the form to contact TruMedia Networks
+		WebElement element = driver.findElement(By.name("fname"));
 		element.sendKeys("Taylor");
 		element = driver.findElement(By.name("lname"));
 		element.sendKeys("Patterson");
@@ -73,6 +89,23 @@ public class TestDriver {
 		element.sendKeys("tcpatt@gmail.com");
 		element = driver.findElement(By.id("textarea1-field"));
 		element.sendKeys("Test message");
+	}
+
+	/**
+	 * The main method for this Java project
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		// Create a Firefox driver
+		WebDriver driver = new FirefoxDriver();
+		
+		// Interact with github.com
+		navigateGitHub(driver);
+		
+		// Share the logger data
+		distributeLog(driver);
 
 		// Close the browser
 		driver.quit();
