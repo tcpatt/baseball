@@ -10,6 +10,7 @@
  *******************************************************************************/
 package tmn.qa.project;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,6 +24,11 @@ import org.openqa.selenium.support.ui.Select;
  * @author Taylor Patterson
  */
 public class TestDriver {
+
+	/**
+	 * Variable declaration for the logger
+	 */
+	static Logger log = Logger.getLogger(TestDriver.class.getName());
 
 	/**
 	 * Traverse some pages starting from github.com
@@ -45,25 +51,22 @@ public class TestDriver {
 		// Click the link to the desired repository
 		driver.findElement(By.linkText("tcpatt/tmn")).click();
 
-		// Simple search for TruMedia
+		// Simple search for "TruMedia"
 		element = driver.findElement(By.name("q"));
 		element.sendKeys("TruMedia");
 		element.submit();
 
-		// Advanced search for TruMedia
-		driver.findElement(By.linkText("advanced search")).click();
+		// Search for "TruMedia" on all of GitHub
+		driver.findElement(By.linkText("Search all of GitHub")).click();
+
+		// Advanced search for "TruMedia" in only the repo for this project
+		driver.findElement(By.linkText("Advanced search")).click();
 		element = driver.findElement(By.id("search_repos"));
 		element.sendKeys("tcpatt/tmn");
 		Select dropdown = new Select(
 				driver.findElement(By.id("search_language")));
 		dropdown.selectByValue("Java");
 		element.submit();
-
-		// Navigate to the test file
-		// driver.findElement(By.id("d4728e20f195aa3992a6172487f5f91f-abf49617197"
-		// + "196df17708d1c9fe79bbed69862ec")).click();
-		// element = driver.findElement(By.className("file"));
-		// System.out.println(element.getText());
 	}
 
 	/**
@@ -100,10 +103,10 @@ public class TestDriver {
 
 		// Create a Firefox driver
 		WebDriver driver = new FirefoxDriver();
-		
+
 		// Interact with github.com
 		navigateGitHub(driver);
-		
+
 		// Share the logger data
 		distributeLog(driver);
 
