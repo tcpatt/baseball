@@ -10,8 +10,13 @@
  *******************************************************************************/
 package tmn.qa.project;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -40,6 +45,7 @@ public class TestDriver {
 	public static void navigateGitHub(WebDriver driver) {
 		// Navigate to github.com
 		driver.get("https://github.com");
+		log.info("Accessed 'https://github.com'");
 
 		// Get the search field
 		WebElement element = driver.findElement(By.name("q"));
@@ -47,25 +53,34 @@ public class TestDriver {
 		// Search for the repo containing this code
 		element.sendKeys("tmn");
 		element.submit();
+		log.info("Searched for 'tmn'");
 
 		// Click the link to the desired repository
 		driver.findElement(By.linkText("tcpatt/tmn")).click();
+		log.info("Clicked on 'tcpatt/tmn'");
 
 		// Simple search for "TruMedia"
 		element = driver.findElement(By.name("q"));
 		element.sendKeys("TruMedia");
 		element.submit();
+		log.info("Executed a simple search on the current repository "
+				+ "(tcpatt/tmn) for 'TruMedia'");
 
 		// Search for "TruMedia" on all of GitHub
 		driver.findElement(By.linkText("Search all of GitHub")).click();
+		log.info("Clicked on 'Search all of GitHub'");
 
 		// Advanced search for "TruMedia" in only the repo for this project
 		driver.findElement(By.linkText("Advanced search")).click();
+		log.info("Clicked on 'Advanced search'");
 		element = driver.findElement(By.id("search_repos"));
 		element.sendKeys("tcpatt/tmn");
+		log.info("Entered 'tcpatt/tmn' into the text field for 'In these "
+				+ "repositories'");
 		Select dropdown = new Select(
 				driver.findElement(By.id("search_language")));
 		dropdown.selectByValue("Java");
+		log.info("Selected 'Java' in the 'Written in this language' dropdown");
 		element.submit();
 	}
 
@@ -75,8 +90,9 @@ public class TestDriver {
 	 * @param driver
 	 *            The {@link WebDriver} object used to control browser
 	 *            interactions
+	 * @throws IOException
 	 */
-	public static void distributeLog(WebDriver driver) {
+	public static void distributeLog(WebDriver driver) throws IOException {
 		// Direct the browser to trumedianetworks.com
 		driver.get("http://www.trumedianetworks.com");
 
@@ -90,8 +106,26 @@ public class TestDriver {
 		element.sendKeys("Patterson");
 		element = driver.findElement(By.id("email2-field"));
 		element.sendKeys("tcpatt@gmail.com");
+
+		// Write the log to the message text area
 		element = driver.findElement(By.id("textarea1-field"));
-		element.sendKeys("Test message");
+		// Message header
+		element.sendKeys("Here are the contents of the log for the test of "
+				+ "github.com:\n");
+		// Duplicate the log
+		String logFilePath = System.getProperty("user.dir")
+				+ System.getProperty("file.separator") + "logs"
+				+ System.getProperty("file.separator") + "GitHubTest.log";
+		BufferedReader logReader = new BufferedReader(
+				new java.io.FileReader(logFilePath));
+		String line = null;
+		while ((line = logReader.readLine()) != null) {
+			element.sendKeys("\n" + line);
+		}
+		logReader.close();
+
+		// Send the message
+		driver.findElement(By.className("button"));
 	}
 
 	/**
@@ -101,17 +135,25 @@ public class TestDriver {
 	 */
 	public static void main(String[] args) {
 
+		// Set the logger configuration
+		DOMConfigurator.configure("log4j.xml");
+
 		// Create a Firefox driver
 		WebDriver driver = new FirefoxDriver();
 
-		// Interact with github.com
-		navigateGitHub(driver);
-
-		// Share the logger data
-		distributeLog(driver);
+		try {
+			// Interact with github.com
+			navigateGitHub(driver);
+			// Share the logger data
+			distributeLog(driver);
+		} catch (NoSuchElementException e) {
+			log.error("Could not find element.\n" + e.getMessage());
+		} catch (IOException e) {
+			log.error("Log file not found.\n" + e.getMessage());
+		}
 
 		// Close the browser
-		driver.quit();
+		// driver.quit();
 	}
 
 }
