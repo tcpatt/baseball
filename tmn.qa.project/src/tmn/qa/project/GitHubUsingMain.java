@@ -21,6 +21,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 /**
  * This class provides a simple demonstration of Selenium {@link WebDriver}
@@ -48,6 +49,8 @@ public class GitHubUsingMain {
 		// Navigate to github.com
 		driver.get("https://github.com");
 		log.info("Accessed 'https://github.com'");
+		Assert.assertEquals(driver.getTitle(),
+				"GitHub - Where software is " + "built");
 
 		// Get the search field
 		WebElement element = driver.findElement(By.name("q"));
@@ -87,7 +90,7 @@ public class GitHubUsingMain {
 	}
 
 	/**
-	 * Navigate to TruMedia Networks' website and send them the assertion log
+	 * Navigate to TruMedia Networks' web site and send them the assertion log
 	 * 
 	 * @param driver
 	 *            The {@link WebDriver} object used to control browser
