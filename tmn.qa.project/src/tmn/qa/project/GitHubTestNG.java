@@ -43,12 +43,12 @@ public class GitHubTestNG {
 	/**
 	 * The {@link WebDriver} used for these tests
 	 */
-	WebDriver driver;
+	private WebDriver driver;
 
 	/**
 	 * The number of files found via simple search
 	 */
-	String simpleSearchCount;
+	private String simpleSearchCount;
 
 	/**
 	 * Initialize the {@link WebDriver} instance and set the logger
@@ -181,7 +181,7 @@ public class GitHubTestNG {
 		Assert.assertNotNull(dropdown);
 		Assert.assertTrue(!dropdown.getOptions().isEmpty());
 		dropdown.selectByValue("Java");
-		log.info("Selected 'Java' in the 'Written in this language' dropdown");
+		log.info("Selected 'Java' in the 'Written in this language' drop down");
 		element.submit();
 		log.info("Searching based on the form values entered.");
 		// Check the count of files containing "TruMedia" in this repository

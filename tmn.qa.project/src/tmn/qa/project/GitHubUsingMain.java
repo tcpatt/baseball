@@ -34,70 +34,194 @@ import org.testng.Assert;
 public class GitHubUsingMain {
 
 	/**
-	 * Variable declaration for the logger
+	 * The log4j logger
 	 */
 	static Logger log = Logger.getLogger(GitHubUsingMain.class.getName());
+
+	/**
+	 * The {@link WebDriver} used for these tests
+	 */
+	private static WebDriver driver;
+
+	/**
+	 * The number of files found via simple search
+	 */
+	private static String simpleSearchCount;
+
+	/**
+	 * Test the browsers ability to navigate to GitHub and log some verification
+	 * checks
+	 */
+	private static void goToGitHub() {
+		// Navigate to github.com
+		driver.get("https://github.com");
+		Assert.assertEquals(driver.getTitle(),
+				"GitHub · Where software is built");
+		log.info("Accessed 'https://github.com'. Page title is: '"
+				+ driver.getTitle() + "'.");
+	}
+
+	/**
+	 * Use the main search field to find repositories containing the string
+	 * "tmn"
+	 */
+	private static void repoSearch() {
+		// Get the search field
+		WebElement element = driver.findElement(By.name("q"));
+		Assert.assertNotNull(element);
+		Assert.assertEquals(element.getAttribute("placeholder"),
+				"Search GitHub");
+		log.info("Accessed the site search field. Placeholder text is: '"
+				+ element.getAttribute("placeholder") + "'.");
+
+		// Search for the repository containing this code
+		element.sendKeys("tmn");
+		element.submit();
+		log.info("Searched the site for 'tmn'");
+	}
+
+	/**
+	 * Find the search result for the repository "tcpatt/tmn" and click on the
+	 * link
+	 */
+	private static void resultsSelect() {
+		// Find the link
+		WebElement element = driver.findElement(By.linkText("tcpatt/tmn"));
+		Assert.assertNotNull(element);
+		Assert.assertEquals(element.getAttribute("href"),
+				"https://github.com/tcpatt/tmn");
+		log.info("Found the link to '" + element.getText() + "'.");
+		// Click the link to the desired repository
+		element.click();
+		log.info("Clicked on the link to 'tcpatt/tmn'");
+	}
+
+	/**
+	 * Search the tcpatt/tmn repository for occurrences of "TruMedia" and make
+	 * some assertions about the results
+	 */
+	private static void simpleSearch() {
+		// Make sure we are on the correct page
+		Assert.assertEquals(driver.getTitle(), "tcpatt/tmn · GitHub");
+		log.info("Active page title: '" + driver.getTitle() + "'.");
+		// Get the search field
+		WebElement element = driver.findElement(By.name("q"));
+		Assert.assertNotNull(element);
+		Assert.assertEquals(element.getAttribute("placeholder"), "Search");
+		Assert.assertEquals(element.getAttribute("aria-label"),
+				"Search this repository");
+		// Send the search term
+		element.sendKeys("TruMedia");
+		element.submit();
+		log.info("Executed a simple search on the current repository "
+				+ "(tcpatt/tmn) for 'TruMedia'");
+		// Check the count of files containing "TruMedia" in this repository
+		element = driver.findElement(By.className("counter"));
+		simpleSearchCount = element.getText();
+		log.info("Found " + simpleSearchCount + " files containing "
+				+ "'TruMedia'.");
+	}
+
+	/**
+	 * Expand the previous search for "TruMedia" to all of GitHub and make some
+	 * assertions about the results
+	 */
+	private static void expandSearch() {
+		// Make sure we are on the correct page
+		Assert.assertEquals(driver.getTitle(), "Search Results · GitHub");
+		// Locate and click the link to expand the search to all of GitHub
+		WebElement element = driver
+				.findElement(By.linkText("Search all of GitHub"));
+		Assert.assertNotNull(element);
+		element.click();
+		log.info("Clicked on 'Search all of GitHub'");
+	}
+
+	/**
+	 * Navigate to the advanced search page and enter some values into the
+	 * fields. Conduct the advanced search.
+	 */
+	private static void advancedSearch() {
+		// Make sure we are on the correct page
+		Assert.assertEquals(driver.getTitle(), "Search · TruMedia · GitHub");
+		// Find the advanced search link
+		WebElement element = driver.findElement(By.linkText("Advanced search"));
+		Assert.assertNotNull(element);
+		element.click();
+		log.info("Clicked on 'Advanced search'");
+		// Edit the advanced search form
+		element = driver.findElement(By.id("search_repos"));
+		Assert.assertNotNull(element);
+		element.sendKeys("tcpatt/tmn");
+		log.info("Entered 'tcpatt/tmn' into the text field for 'In these "
+				+ "repositories'");
+		Select dropdown = new Select(
+				driver.findElement(By.id("search_language")));
+		Assert.assertNotNull(dropdown);
+		Assert.assertTrue(!dropdown.getOptions().isEmpty());
+		dropdown.selectByValue("Java");
+		log.info("Selected 'Java' in the 'Written in this language' drop down");
+		element.submit();
+		log.info("Searching based on the form values entered.");
+		// Check the count of files containing "TruMedia" in this repository
+		element = driver.findElement(By.className("counter"));
+		Assert.assertEquals(element.getText(), simpleSearchCount);
+		log.info("Simple search and advanced search both return "
+				+ simpleSearchCount + " files containing 'TruMedia'.");
+	}
 
 	/**
 	 * Traverse some pages starting from github.com
 	 * 
 	 * @param driver
 	 *            The {@link WebDriver} object used to control browser
-	 *            interactions
+	 *            interactions public static void navigateGitHub(WebDriver
+	 *            driver) { // Navigate to github.com
+	 *            driver.get("https://github.com"); log.info(
+	 *            "Accessed 'https://github.com'");
+	 *            Assert.assertEquals(driver.getTitle(),
+	 *            "GitHub - Where software is " + "built");
+	 * 
+	 *            // Get the search field WebElement element =
+	 *            driver.findElement(By.name("q"));
+	 * 
+	 *            // Search for the repo containing this code
+	 *            element.sendKeys("tmn"); element.submit(); log.info(
+	 *            "Searched for 'tmn'");
+	 * 
+	 *            // Click the link to the desired repository
+	 *            driver.findElement(By.linkText("tcpatt/tmn")).click();
+	 *            log.info("Clicked on 'tcpatt/tmn'");
+	 * 
+	 *            // Simple search for "TruMedia" element =
+	 *            driver.findElement(By.name("q"));
+	 *            element.sendKeys("TruMedia"); element.submit(); log.info(
+	 *            "Executed a simple search on the current repository " +
+	 *            "(tcpatt/tmn) for 'TruMedia'");
+	 * 
+	 *            // Search for "TruMedia" on all of GitHub
+	 *            driver.findElement(By.linkText("Search all of GitHub"
+	 *            )).click(); log.info("Clicked on 'Search all of GitHub'");
+	 * 
+	 *            // Advanced search for "TruMedia" in only the repo for this
+	 *            project driver.findElement(By.linkText("Advanced search"
+	 *            )).click(); log.info("Clicked on 'Advanced search'"); element
+	 *            = driver.findElement(By.id("search_repos"));
+	 *            element.sendKeys("tcpatt/tmn"); log.info(
+	 *            "Entered 'tcpatt/tmn' into the text field for 'In these " +
+	 *            "repositories'"); Select dropdown = new Select(
+	 *            driver.findElement(By.id("search_language")));
+	 *            dropdown.selectByValue("Java"); log.info(
+	 *            "Selected 'Java' in the 'Written in this language' dropdown");
+	 *            element.submit(); }
 	 */
-	public static void navigateGitHub(WebDriver driver) {
-		// Navigate to github.com
-		driver.get("https://github.com");
-		log.info("Accessed 'https://github.com'");
-		Assert.assertEquals(driver.getTitle(),
-				"GitHub - Where software is " + "built");
-
-		// Get the search field
-		WebElement element = driver.findElement(By.name("q"));
-
-		// Search for the repo containing this code
-		element.sendKeys("tmn");
-		element.submit();
-		log.info("Searched for 'tmn'");
-
-		// Click the link to the desired repository
-		driver.findElement(By.linkText("tcpatt/tmn")).click();
-		log.info("Clicked on 'tcpatt/tmn'");
-
-		// Simple search for "TruMedia"
-		element = driver.findElement(By.name("q"));
-		element.sendKeys("TruMedia");
-		element.submit();
-		log.info("Executed a simple search on the current repository "
-				+ "(tcpatt/tmn) for 'TruMedia'");
-
-		// Search for "TruMedia" on all of GitHub
-		driver.findElement(By.linkText("Search all of GitHub")).click();
-		log.info("Clicked on 'Search all of GitHub'");
-
-		// Advanced search for "TruMedia" in only the repo for this project
-		driver.findElement(By.linkText("Advanced search")).click();
-		log.info("Clicked on 'Advanced search'");
-		element = driver.findElement(By.id("search_repos"));
-		element.sendKeys("tcpatt/tmn");
-		log.info("Entered 'tcpatt/tmn' into the text field for 'In these "
-				+ "repositories'");
-		Select dropdown = new Select(
-				driver.findElement(By.id("search_language")));
-		dropdown.selectByValue("Java");
-		log.info("Selected 'Java' in the 'Written in this language' dropdown");
-		element.submit();
-	}
 
 	/**
 	 * Navigate to TruMedia Networks' web site and send them the assertion log
 	 * 
-	 * @param driver
-	 *            The {@link WebDriver} object used to control browser
-	 *            interactions
 	 * @throws IOException
 	 */
-	public static void distributeLog(WebDriver driver) throws IOException {
+	private static void distributeLog() throws IOException {
 		// Direct the browser to trumedianetworks.com
 		driver.get("http://www.trumedianetworks.com");
 
@@ -144,13 +268,18 @@ public class GitHubUsingMain {
 		DOMConfigurator.configure("log4j.xml");
 
 		// Create a Firefox driver
-		WebDriver driver = new FirefoxDriver();
+		driver = new FirefoxDriver();
 
 		try {
 			// Interact with github.com
-			navigateGitHub(driver);
+			goToGitHub();
+			repoSearch();
+			resultsSelect();
+			simpleSearch();
+			expandSearch();
+			advancedSearch();
 			// Share the logger data
-			distributeLog(driver);
+			distributeLog();
 		} catch (NoSuchElementException e) {
 			log.error("Could not find element.\n" + e.getMessage());
 		} catch (IOException e) {
@@ -159,6 +288,12 @@ public class GitHubUsingMain {
 
 		// Close the browser
 		driver.quit();
+
+		// Notify the user of completion
+		System.out.println("\n\n *** Test complete. ***\n Log written to "
+				+ System.getProperty("user.dir")
+				+ System.getProperty("file.separator") + "logs"
+				+ System.getProperty("file.separator") + "GitHubTest.log");
 	}
 
 }
