@@ -129,6 +129,7 @@ public class GitHubUsingMain {
 	private static void expandSearch() {
 		// Make sure we are on the correct page
 		Assert.assertEquals(driver.getTitle(), "Search Results · GitHub");
+		log.info("Active page title: '" + driver.getTitle() + "'.");
 		// Locate and click the link to expand the search to all of GitHub
 		WebElement element = driver
 				.findElement(By.linkText("Search all of GitHub"));
@@ -144,6 +145,7 @@ public class GitHubUsingMain {
 	private static void advancedSearch() {
 		// Make sure we are on the correct page
 		Assert.assertEquals(driver.getTitle(), "Search · TruMedia · GitHub");
+		log.info("Active page title: '" + driver.getTitle() + "'.");
 		// Find the advanced search link
 		WebElement element = driver.findElement(By.linkText("Advanced search"));
 		Assert.assertNotNull(element);
