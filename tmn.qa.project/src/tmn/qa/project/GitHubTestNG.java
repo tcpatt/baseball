@@ -10,43 +10,63 @@
  *******************************************************************************/
 package tmn.qa.project;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterTest;
 
 /**
- * This class provides a simple demonstration of Selenium WebDriver. It
- * demonstrates some page navigation and form manipulation.
+ * This class provides a simple demonstration of Selenium {@link WebDriver}
+ * using the TestNG framework. It demonstrates some {@link FirefoxDriver} page
+ * navigation and form manipulation. Logging is provided by log4j in addition to
+ * the reporting provided by TestNG.
  * 
  * @author Taylor Patterson
  */
-public class TestDriver {
+public class GitHubTestNG {
 
 	/**
-	 * Variable declaration for the logger
+	 * The log4j logger
 	 */
-	static Logger log = Logger.getLogger(TestDriver.class.getName());
+	static Logger log = Logger.getLogger(GitHubUsingMain.class.getName());
 
 	/**
-	 * Traverse some pages starting from github.com
-	 * 
-	 * @param driver
-	 *            The {@link WebDriver} object used to control browser
-	 *            interactions
+	 * The {@link WebDriver} used for these tests
 	 */
-	public static void navigateGitHub(WebDriver driver) {
+	WebDriver driver;
+
+	/**
+	 * Initialize the {@link WebDriver} instance and set the logger
+	 * configuration
+	 */
+	@BeforeTest
+	public void setup() {
+		// Set the logger configuration
+		DOMConfigurator.configure("log4j.xml");
+
+		// Create a Firefox driver
+		driver = new FirefoxDriver();
+	}
+
+	@Test(priority = 0)
+	public void goToGitHubTest() {
 		// Navigate to github.com
 		driver.get("https://github.com");
 		log.info("Accessed 'https://github.com'");
+	}
 
+	@Test(priority = 1)
+	public void repoSearchTest() {
 		// Get the search field
 		WebElement element = driver.findElement(By.name("q"));
 
@@ -54,26 +74,38 @@ public class TestDriver {
 		element.sendKeys("tmn");
 		element.submit();
 		log.info("Searched for 'tmn'");
+	}
 
+	@Test(priority = 2)
+	public void resultsSelectTest() {
 		// Click the link to the desired repository
 		driver.findElement(By.linkText("tcpatt/tmn")).click();
 		log.info("Clicked on 'tcpatt/tmn'");
+	}
 
+	@Test(priority = 3)
+	public void simpleSearchTest() {
 		// Simple search for "TruMedia"
-		element = driver.findElement(By.name("q"));
+		WebElement element = driver.findElement(By.name("q"));
 		element.sendKeys("TruMedia");
 		element.submit();
 		log.info("Executed a simple search on the current repository "
 				+ "(tcpatt/tmn) for 'TruMedia'");
+	}
 
+	@Test(priority = 4)
+	public void expandSearchTest() {
 		// Search for "TruMedia" on all of GitHub
 		driver.findElement(By.linkText("Search all of GitHub")).click();
 		log.info("Clicked on 'Search all of GitHub'");
+	}
 
+	@Test(priority = 5)
+	public void advancedSearchTest() {
 		// Advanced search for "TruMedia" in only the repo for this project
 		driver.findElement(By.linkText("Advanced search")).click();
 		log.info("Clicked on 'Advanced search'");
-		element = driver.findElement(By.id("search_repos"));
+		WebElement element = driver.findElement(By.id("search_repos"));
 		element.sendKeys("tcpatt/tmn");
 		log.info("Entered 'tcpatt/tmn' into the text field for 'In these "
 				+ "repositories'");
@@ -85,14 +117,12 @@ public class TestDriver {
 	}
 
 	/**
-	 * Navigate to TruMedia Networks' website and send them the assertion log
+	 * Distribute the log file and close the Firefox test browser
 	 * 
-	 * @param driver
-	 *            The {@link WebDriver} object used to control browser
-	 *            interactions
 	 * @throws IOException
 	 */
-	public static void distributeLog(WebDriver driver) throws IOException {
+	@AfterTest
+	public void tearDown() throws IOException {
 		// Direct the browser to trumedianetworks.com
 		driver.get("http://www.trumedianetworks.com");
 
@@ -126,34 +156,9 @@ public class TestDriver {
 
 		// Send the message
 		driver.findElement(By.className("button"));
-	}
 
-	/**
-	 * The main method for this Java project
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-		// Set the logger configuration
-		DOMConfigurator.configure("log4j.xml");
-
-		// Create a Firefox driver
-		WebDriver driver = new FirefoxDriver();
-
-		try {
-			// Interact with github.com
-			navigateGitHub(driver);
-			// Share the logger data
-			distributeLog(driver);
-		} catch (NoSuchElementException e) {
-			log.error("Could not find element.\n" + e.getMessage());
-		} catch (IOException e) {
-			log.error("Log file not found.\n" + e.getMessage());
-		}
-
-		// Close the browser
-		// driver.quit();
+		// Close Firefox driver
+		driver.close();
 	}
 
 }
