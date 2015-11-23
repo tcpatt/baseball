@@ -231,8 +231,7 @@ public class GitHubTestNG {
 		logReader.close();
 
 		// Send the message
-		driver.findElement(By.className("button"));
-
+		driver.findElement(By.className("button")).click();
 	}
 
 	/**
