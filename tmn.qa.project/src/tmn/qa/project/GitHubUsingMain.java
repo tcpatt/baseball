@@ -171,52 +171,6 @@ public class GitHubUsingMain {
 	}
 
 	/**
-	 * Traverse some pages starting from github.com
-	 * 
-	 * @param driver
-	 *            The {@link WebDriver} object used to control browser
-	 *            interactions public static void navigateGitHub(WebDriver
-	 *            driver) { // Navigate to github.com
-	 *            driver.get("https://github.com"); log.info(
-	 *            "Accessed 'https://github.com'");
-	 *            Assert.assertEquals(driver.getTitle(),
-	 *            "GitHub - Where software is " + "built");
-	 * 
-	 *            // Get the search field WebElement element =
-	 *            driver.findElement(By.name("q"));
-	 * 
-	 *            // Search for the repo containing this code
-	 *            element.sendKeys("tmn"); element.submit(); log.info(
-	 *            "Searched for 'tmn'");
-	 * 
-	 *            // Click the link to the desired repository
-	 *            driver.findElement(By.linkText("tcpatt/tmn")).click();
-	 *            log.info("Clicked on 'tcpatt/tmn'");
-	 * 
-	 *            // Simple search for "TruMedia" element =
-	 *            driver.findElement(By.name("q"));
-	 *            element.sendKeys("TruMedia"); element.submit(); log.info(
-	 *            "Executed a simple search on the current repository " +
-	 *            "(tcpatt/tmn) for 'TruMedia'");
-	 * 
-	 *            // Search for "TruMedia" on all of GitHub
-	 *            driver.findElement(By.linkText("Search all of GitHub"
-	 *            )).click(); log.info("Clicked on 'Search all of GitHub'");
-	 * 
-	 *            // Advanced search for "TruMedia" in only the repo for this
-	 *            project driver.findElement(By.linkText("Advanced search"
-	 *            )).click(); log.info("Clicked on 'Advanced search'"); element
-	 *            = driver.findElement(By.id("search_repos"));
-	 *            element.sendKeys("tcpatt/tmn"); log.info(
-	 *            "Entered 'tcpatt/tmn' into the text field for 'In these " +
-	 *            "repositories'"); Select dropdown = new Select(
-	 *            driver.findElement(By.id("search_language")));
-	 *            dropdown.selectByValue("Java"); log.info(
-	 *            "Selected 'Java' in the 'Written in this language' dropdown");
-	 *            element.submit(); }
-	 */
-
-	/**
 	 * Navigate to TruMedia Networks' web site and send them the assertion log
 	 * 
 	 * @throws IOException
